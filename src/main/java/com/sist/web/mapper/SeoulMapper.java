@@ -20,5 +20,5 @@ public interface SeoulMapper {
 	
 	public void seoulHitIncrement(int cno);
 	
-	public SeoulVO seoulAttractionDetailData(int contenttype);
+	public SeoulVO seoulAttractionDetailData(int contentid);
 }
