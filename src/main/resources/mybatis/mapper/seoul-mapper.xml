@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.web.mapper.SeoulMapper">
+  <select id="seoulListData" resultType="com.sist.web.vo.SeoulVO" parameterType="hashmap">
+  	SELECT no, contentid, contenttype, title, address, image1, hit
+  	FROM seoultravel
+  	WHERE contenttype = #{contenttype}
+  	ORDER BY no ASC
+  	OFFSET #{start} ROWS FETCH NEXT 12 ROWS ONLY
+  </select>
+  <resultMap type="com.sist.web.vo.SeoulVO" id="attMap">
+  	<result property="avo.infocenter" column="infocenter" />
+  	<result property="avo.restdate" column="restdate" />
+  	<result property="avo.usetime" column="usetime" />
+  	<result property="avo.parking" column="parking" />
+  	<result property="avo.msg" column="msg" />
+  </resultMap>
+  <select id="seoulAttractionDetailData" resultMap="attMap" parameterType="int">
+  	SELECT s.no, title, image1, address, x, y, infocenter, restdate, usetime, parking, msg
+  	FROM seoultravel s JOIN attraction a
+  	on s.contentid = a.contentid
+  	AND s.contentid = #{contentid}
+  </select>
+  <update id="seoulHitIncrement" parameterType="int">
+  	UPDATE seoultravel SET
+  	hit = hit + 1
+  	WHERE contentid = #{contentid}
+  </update>
+</mapper>
