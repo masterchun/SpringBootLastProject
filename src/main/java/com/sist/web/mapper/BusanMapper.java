@@ -17,4 +17,10 @@ public interface BusanMapper {
 	@Select("SELECT CEIL(COUNT(*) / 12.0) FROM busantravel "
 		  + "WHERE contenttype = #{contenttype}")
 	public int busanTotalPage(int contenttype);
+	
+	public List<BusanVO> busanFindData(Map<String, Object> map);
+	
+	public int busanFindTotalPage(String address);
+	
+	public List<BusanVO> busanTop4Data();
 }

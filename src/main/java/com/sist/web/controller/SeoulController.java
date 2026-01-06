@@ -95,12 +95,11 @@ public class SeoulController {
 	@GetMapping("/seoul/detail")
 	public String seoul_detail(@RequestParam("contentid") int contentid,
 			@RequestParam("contenttype") int contenttype, Model model) {
-		
+		SeoulVO vo = null;
 		String jsp = "";
 		
 		if (contenttype == 12) {
-			SeoulVO vo = sService.seoulAttractionDetailData(contenttype);
-			model.addAttribute("vo", vo);
+			vo = sService.seoulAttractionDetailData(contentid);
 			jsp = "../seoul/attraction.jsp";
 		} else if (contenttype == 14) {
 			jsp = "../seoul/culture.jsp";
@@ -114,7 +113,38 @@ public class SeoulController {
 			jsp = "../seoul/foodstore.jsp";
 		}
 		
+
+		model.addAttribute("vo", vo);
+		
 		model.addAttribute("main_jsp", jsp);
 		return "main/main";
 	}
+	
+	@GetMapping("seoul/find")
+	public String seoul_find(Model model) {
+		model.addAttribute("main_jsp", "../seoul/find.jsp");
+		return "main/main";
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

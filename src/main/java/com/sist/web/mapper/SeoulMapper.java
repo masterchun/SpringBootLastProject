@@ -18,7 +18,13 @@ public interface SeoulMapper {
 		  + "WHERE contenttype = #{contenttype}")
 	public int seoulTotalPage(int contenttype);
 	
-	public void seoulHitIncrement(int cno);
+	public void seoulHitIncrement(int contentid);
 	
 	public SeoulVO seoulAttractionDetailData(int contentid);
+	
+	public List<SeoulVO> seoulFindData(Map<String, Object> map);
+	
+	public int seoulFindTotalPage(String address);
+	
+	public List<SeoulVO> seoulTop5Data();
 }

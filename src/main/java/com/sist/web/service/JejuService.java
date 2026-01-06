@@ -9,4 +9,10 @@ public interface JejuService {
 	public List<JejuVO> jejuListData(Map<String, Object> map);
 	
 	public int jejuTotalPage(int contenttype);
+	
+	public List<JejuVO> jejuFindData(Map<String, Object> map);
+	
+	public int jejuFindTotalPage(Map<String, Object> map);
+	
+	public List<JejuVO> jejuTop4Data();
 }

@@ -22,6 +22,11 @@
 
     <!-- Responsive CSS -->
     <link href="/css/responsive/responsive.css" rel="stylesheet">
+    
+    <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue-demi"></script>
+    <script src="https://unpkg.com/pinia@2.1.7/dist/pinia.iife.prod.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 </head>
 

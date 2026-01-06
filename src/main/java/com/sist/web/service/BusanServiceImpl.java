@@ -26,5 +26,23 @@ public class BusanServiceImpl implements BusanService {
 		// TODO Auto-generated method stub
 		return mapper.busanTotalPage(contenttype);
 	}
+
+	@Override
+	public List<BusanVO> busanFindData(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return mapper.busanFindData(map);
+	}
+
+	@Override
+	public int busanFindTotalPage(String address) {
+		// TODO Auto-generated method stub
+		return mapper.busanFindTotalPage(address);
+	}
+
+	@Override
+	public List<BusanVO> busanTop4Data() {
+		// TODO Auto-generated method stub
+		return mapper.busanTop4Data();
+	}
 	
 }

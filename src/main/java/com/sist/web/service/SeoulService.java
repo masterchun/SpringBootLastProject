@@ -11,4 +11,10 @@ public interface SeoulService {
 	public int seoulTotalPage(int contenttype);
 	
 	public SeoulVO seoulAttractionDetailData(int cno);
+	
+	public List<SeoulVO> seoulFindData(Map<String, Object> map);
+	
+	public int seoulFindTotalPage(String address);
+	
+	public List<SeoulVO> seoulTop5Data();
 }

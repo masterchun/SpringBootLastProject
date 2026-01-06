@@ -29,18 +29,28 @@ public class SeoulServiceImpl implements SeoulService {
 	}
 
 	@Override
-	public SeoulVO seoulAttractionDetailData(int cno) {
+	public SeoulVO seoulAttractionDetailData(int contentid) {
 		// TODO Auto-generated method stub
-		SeoulVO vo = null;
-		try {
+		mapper.seoulHitIncrement(contentid);
+		return mapper.seoulAttractionDetailData(contentid);
+	}
 
-			mapper.seoulHitIncrement(cno);
-			vo = mapper.seoulAttractionDetailData(cno);	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return vo;
+	@Override
+	public List<SeoulVO> seoulFindData(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return mapper.seoulFindData(map);
+	}
+
+	@Override
+	public int seoulFindTotalPage(String address) {
+		// TODO Auto-generated method stub
+		return mapper.seoulFindTotalPage(address);
+	}
+
+	@Override
+	public List<SeoulVO> seoulTop5Data() {
+		// TODO Auto-generated method stub
+		return mapper.seoulTop5Data();
 	}
 
 }

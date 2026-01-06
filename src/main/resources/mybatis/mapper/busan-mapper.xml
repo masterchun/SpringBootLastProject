@@ -10,4 +10,29 @@
   	ORDER BY no ASC
   	OFFSET #{start} ROWS FETCH NEXT 12 ROWS ONLY
   </select>
+    <select id="busanFindData" resultType="com.sist.web.vo.BusanVO" parameterType="hashmap">
+    SELECT no, contentid, contenttype, title, address, image1, hit
+  	FROM busantravel
+  	WHERE address LIKE '%'||#{address}||'%'
+  	ORDER BY no ASC
+  	OFFSET #{start} ROWS FETCH NEXT 12 ROWS ONLY
+  </select>
+  <select id="busanFindTotalPage" resultType="int" parameterType="string">
+  	SELECT CEIL(COUNT(*) / 12.0)
+  	FROM busantravel
+  	WHERE address LIKE '%'||#{address}||'%'
+  </select>
+  <resultMap type="BusanVO" id="busanMap">
+  	<result column="usetime" property="avo.usetime"/>
+  	<result column="restdate" property="avo.restdate"/>
+  	<result column="parking" property="avo.parking"/>
+  </resultMap>
+  <select id="busanTop4Data" resultMap="busanMap">
+  	SELECT no, contentid, title, address, image1, hit, usetime, restdate, parking, rownum
+  	FROM (SELECT b.no, b.contentid, title, address, image1, hit, usetime, restdate, parking
+  	FROM busantravel b, attraction a
+  	where b.contentid = a.contentid
+  	ORDER BY hit DESC)
+  	WHERE rownum &lt;= 4
+  </select>
 </mapper>
