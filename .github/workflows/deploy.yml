@@ -42,7 +42,7 @@ jobs:
 
     - name: Add known_hosts
       run: |
-        ssh-keygen -t rsa 3.34.194.111 >> ~/.ssh/known_hosts
+        ssh-keygen -H rsa 3.34.194.111 >> ~/.ssh/known_hosts
 
     - name: Deploy to Server with rsync
       run: |
