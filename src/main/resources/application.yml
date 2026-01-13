@@ -11,6 +11,10 @@ spring:
     username: hr
     password: happy
     driver-class-name: oracle.jdbc.OracleDriver
+  #ai:
+    #google:
+      #genai:
+        #api-key:
 mybatis:
   type-aliases-package: com.sist.web.vo
   mapper-locations: mybatis/mapper/*.xml

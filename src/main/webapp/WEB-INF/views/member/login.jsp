@@ -77,5 +77,115 @@
 			</div>
 		</div>
 	</section>
+	<script>
+	      let joinApp=Vue.createApp({
+         data(){
+            return {
+               userid:'',
+               username:'',
+               userpwd:'',
+               userpwd1:'',
+               sex:'',
+               birthday:'',
+               email:'',
+               post:'',
+               addr1:'',
+               addr2:'',
+               phone1:'',
+               phone2:'',
+               content:'',
+               
+               isReadOnly:false,
+               idOk:'',
+               post:'',
+               addr1:'',
+            }
+         },
+         methods:{
+            // idCheck
+            idCheck(){
+               if(this.userid==='')
+               {
+                  this.$refs.userid.focus()
+                  return
+               }
+               
+               axios.get("/member/idCheck_vue/",{
+                  params:{
+                     userid:this.userid
+                  }
+               }).then(response=>{
+                  console.log(response.data)
+                  if(response.data===0)
+                  {
+                     this.idOk='사용 가능한 아이디입니다'
+                     this.isReadOnly=true
+                  }
+                  else
+                  {
+                     this.idOk='이미 사용중인 아이디입니다'
+                     this.userid=''
+                     this.$refs.userid.focus()
+                  }
+               }).catch(error=>{
+                  console.log(error.response)
+               })
+            },
+            postFind(){
+               let _this=this
+               new daum.Postcode({
+                  oncomplete:function(data)
+                  {
+                     _this.post=data.zonecode
+                     _this.addr1=data.address
+                  }
+               }).open()
+            },
+            join(){
+               if(this.userid==='')
+               {
+                  this.$refs.userid.focus()
+                  return
+               }
+               if(this.userpwd==='')
+               {
+                  this.$refs.userpwd.focus()
+                  return
+               }
+               if(this.userpwd1==='')
+               {
+                  this.$refs.userpwd1.focus()
+                  return
+               }
+               if(this.userpwd!==this.userpwd1)
+               {
+                  this.userpwd=''
+                  this.userpwd1=''
+                  this.$refs.userpwd.focus()
+                  return
+               }
+               if(this.username==='')
+               {
+                  this.$refs.username.focus()
+                  return
+               }
+               if(this.birthday==='')
+               {
+                  this.$refs.birthday.focus()
+                  return
+               }
+               if(this.email==='')
+               {
+                  this.$refs.email.focus()
+                  return
+               }
+               
+               this.$refs.frm.submit()
+            }
+            // join
+         }
+      })
+      joinApp.mount('#join_section')
+      </script>
 </body>
 </html>

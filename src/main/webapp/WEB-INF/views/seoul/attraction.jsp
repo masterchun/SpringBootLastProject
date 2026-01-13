@@ -1,81 +1,226 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="/css/map.css" type="text/css">
+<script>
+const SESSION_ID = '${sessionScope.userid}'
+const CNO = '${param.contentid}'
+</script>
+<style type="text/css">
+.page-link:hover, .a-btn {
+	cursor: pointer;
+}
+</style>
 </head>
 <body>
-    <!-- ****** Breadcumb Area Start ****** -->
-    <div class="breadcumb-area" style="background-image: url(/img/bg-img/breadcumb.jpg);">
-        <div class="container h-100">
-            <div class="row h-100 align-items-center">
-                <div class="col-12">
-                    <div class="bradcumb-title text-center">
-                        <h2>${vo.title }</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="breadcumb-nav">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ****** Breadcumb Area End ****** -->
+	<!-- ****** Breadcumb Area Start ****** -->
+	<div class="breadcumb-area"
+		style="background-image: url(/img/bg-img/breadcumb.jpg);">
+		<div class="container h-100">
+			<div class="row h-100 align-items-center">
+				<div class="col-12">
+					<div class="bradcumb-title text-center">
+						<h2>${vo.title }</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="breadcumb-nav">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+						</ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ****** Breadcumb Area End ****** -->
 
-    <!-- ****** Archive Area Start ****** -->
-    <section class="archive-area section_padding_80">
-        <div class="container">
-            <div class="row">
-            	<table class="table">
-            		<tbody>
-            			<tr>
-            				<td width="30%" class="text-center" rowspan="6">
-            					<img src="${vo.image1 }" style="width: 100%">
-            				</td>
-            				<td colspan="2"><h3>${vo.title }</h3></td>
-            			</tr>
-            			<tr>
-            				<td width="15%" class="text-center">주소</td>
-            				<td width="55%">${vo.address }</td>
-            			</tr>
-            			<tr>
-            				<td width="15%" class="text-center">안내</td>
-            				<td width="55%">${vo.avo.infocenter }</td>
-            			</tr>
-            			<tr>
-            				<td width="15%" class="text-center">사용시간</td>
-            				<td width="55%">${vo.avo.usetime }</td>
-            			</tr>
-            			<tr>
-            				<td width="15%" class="text-center">휴무일</td>
-            				<td width="55%">${vo.avo.restdate }</td>
-            			</tr>
-            			<tr>
-            				<td width="15%" class="text-center">주차</td>
-            				<td width="55%">${vo.avo.parking }</td>
-            			</tr>
-            		</tbody>
-            	</table>
-            	<table class="table">
-            		<tbody>
-            			<tr>
-            				<td>${vo.avo.msg }</td>
-            			</tr>
-            		</tbody>
-            	</table>
-            </div>
-        </div>
-   	</section>
+	<!-- ****** Archive Area Start ****** -->
+	<section class="archive-area section_padding_80">
+		<div class="container">
+			<div class="row">
+				<table class="table">
+					<tbody>
+						<tr>
+							<td width="30%" class="text-center" rowspan="6"><img
+								src="${vo.image1 }" style="width: 100%"></td>
+							<td colspan="2"><h3>${vo.title }</h3></td>
+						</tr>
+						<tr>
+							<td width="15%" class="text-center">주소</td>
+							<td width="55%">${vo.address }</td>
+						</tr>
+						<tr>
+							<td width="15%" class="text-center">안내</td>
+							<td width="55%">${vo.avo.infocenter }</td>
+						</tr>
+						<tr>
+							<td width="15%" class="text-center">사용시간</td>
+							<td width="55%">${vo.avo.usetime }</td>
+						</tr>
+						<tr>
+							<td width="15%" class="text-center">휴무일</td>
+							<td width="55%">${vo.avo.restdate }</td>
+						</tr>
+						<tr>
+							<td width="15%" class="text-center">주차</td>
+							<td width="55%">${vo.avo.parking }</td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="table">
+					<tbody>
+						<tr>
+							<td>${vo.avo.msg }</td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="table">
+					<tbody>
+						<tr>
+							<td class="text-center">
+								<div class="map_wrap">
+									<div id="map"
+										style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
+
+									<div id="menu_wrap" class="bg_white">
+										<div class="option">
+											<div>
+												<form onsubmit="searchPlaces(); return false;">
+													키워드 : <input type="text" value="${addr } 맛집" id="keyword"
+														size="15">
+													<button type="submit">검색하기</button>
+												</form>
+											</div>
+										</div>
+										<hr>
+										<ul id="placesList"></ul>
+										<div id="pagination"></div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div id="comment">
+					<div class="comment_area section_padding_50 clearfix">
+						<h4 class="mb-30">댓글 ({{store.count}})</h4>
+
+						<ol>
+							<!-- Single Comment Area -->
+							<li class="single_comment_area"
+								v-for="(rvo, index) in store.list" :key="index">
+								<div class="comment-wrapper d-flex">
+									<!-- Comment Meta -->
+									<div class="comment-author">
+										<img src="/img/man.png" v-if="rvo.sex === '남자'"> <img
+											src="/img/woman.png" v-if="rvo.sex === '여자'">
+									</div>
+									<!-- Comment Content -->
+									<div class="comment-content">
+										<span class="comment-date text-muted">{{ rvo.dbday }}</span>
+										<h5>{{ rvo.name }}</h5>
+										<p>{{ rvo.msg }}</p>
+										<a class="a-btn" v-if="store.sessionId === rvo.id"
+											@click="store.toggleUpdate(rvo.no, rvo.msg)">{{
+											store.upReplyNo === rvo.no ? '취소' : '수정' }}</a> <a
+											class="active a-btn" v-if="store.sessionId === rvo.id"
+											@click="store.commonsDelete(rvo.no)">삭제</a>
+											<a class="a-btn" v-if="store.seesionId !== null">댓글</a>
+										<div class="leave-comment-area section_padding_50 clearfix"
+											style="padding-top: 5px" v-if="store.upReplyNo === rvo.no">
+											<div class="comment-form" v-if="sessionId != ''">
+
+												<textarea v-model="store.updateMsg[rvo.no]" name="message"
+													cols="60" rows="5" placeholder="Message"
+													style="float: left; display: inline-block;"></textarea>
+												<button type="button" class="btn-primary"
+													style="float: left; width: 80px; height: 100px; display: inline-block;"
+													@click="store.replyUpdate(rvo.no)">댓글 수정</button>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ol>
+					</div>
+
+					<!-- Leave A Comment -->
+					<div class="leave-comment-area section_padding_50 clearfix">
+						<div class="comment-form" v-if="store.sessionId != ''">
+
+							<textarea ref="msgRef" v-model="store.msg" name="message"
+								cols="60" rows="5" placeholder="Message"
+								style="float: left; display: inline-block;"></textarea>
+							<button type="button" class="btn-primary"
+								style="float: left; width: 80px; height: 100px; display: inline-block;"
+								@click="store.commonsInsert(msgRef)">댓글쓰기</button>
+
+						</div>
+					</div>
+					<div class="col-12">
+						<div class="pagination-area d-sm-flex mt-15">
+							<nav aria-label="#">
+								<ul class="pagination">
+										<li class="page-item" v-if="store.startPage > 1">
+										<a class="page-link" @click="store.movePage(store.startPage - 1)">이전 <i
+												class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
+
+										<li class="page-item" v-for="i in store.range" >
+										<a class="page-link" @click="store.movePage(i)">{{ i }}</a>
+										</li>
+
+										<li class="page-item" v-if="store.endPage < store.totalpage">
+										<a class="page-link" @click="store.movePage(store.endPage + 1)">다음 <i
+												class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
+								</ul>
+							</nav>
+							<div class="page-status">
+								<p>{{ store.curpage }}page / {{ store.totalpage }} pages</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	</section>
+	<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=01e20316f7d8eac2153a727c2b44f89a&libraries=services"></script>
+	<script src="/vue/map.js"></script>
+	<script src="/vue/axios.js"></script>
+	<script src="/vue/reply/commonsReplyStore.js"></script>
+	<script>
+		const {createApp, onMounted, ref} = Vue
+		const {createPinia} = Pinia
+		
+		const commonsApp = createApp({
+			setup() {
+				const store = useCommonsReplyStore()
+				const msgRef = ref(null)
+				
+				onMounted (() => {
+					store.sessionId = SESSION_ID
+					store.commonsListData(CNO)
+				})
+				
+				return {
+					store,
+					msgRef
+				}
+			}
+		})
+		
+		commonsApp.use(createPinia())
+		commonsApp.mount("#comment")
+	</script>
 </body>
 </html>

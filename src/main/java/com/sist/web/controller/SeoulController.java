@@ -114,6 +114,8 @@ public class SeoulController {
 			jsp = "../seoul/foodstore.jsp";
 		}
 
+		String[] addrs = vo.getAddress().split(" ");
+		model.addAttribute("addr", addrs[1].trim());
 		model.addAttribute("vo", vo);
 		
 		model.addAttribute("main_jsp", jsp);
