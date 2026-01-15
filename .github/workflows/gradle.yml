@@ -1,0 +1,64 @@
+# git action deploy
+
+name: Deploy to Ubuntu Server
+
+on:
+  push:
+    branches:
+      - main  # main 브랜치에 푸시될 때 트리거 (Commit / Push)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # ubuntu 최종 버전
+
+    steps:
+    # 코드 체크아웃
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # JDK 17 설정
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    # gradlew 권한 설정
+    - name: Set gradlew permissions
+      run: |
+        chmod +x ./gradlew
+
+    # gradle 빌드
+    - name: Build with Gradle
+      run: ./gradlew clean build
+      # war 파싱 = clean 전체 삭제 => 다시 build
+    - name: Login to Docker Hub
+      run: |
+        echo "${{secrets.DOCKERHUB_PASSWORD}}" | docker login -u "${{secrets.DOCKERHUB_USERNAME}}" --password-stdin
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t ${{secrets.DOCKERHUB_USERNAME}}/spring-boot-app:latest
+        docker push ${{secrets.DOCKERHUB_USERNAME}}/spring-boot-app:latest
+
+    # SSH : 암호화 통신 => 개인키(id_ed25519)를 가지고 AWS에 접속
+    - name: Add SSH Key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{secrets.SERVER_SSH_KEY}}
+
+    # 서버 키 등록
+    - name: Add known_hosts
+      run: |
+        ssh-keyscan -t ed25519 54.180.80.218 >> ~/.ssh/known_hosts
+
+    # 실행
+    # 정지 => docker stop image 명
+    # 삭제 => docker rm image명
+    - name: Deploy on Server using Docker Hub image
+        run: |
+          ssh ubuntu@54.180.80.218 << 'EOF'
+                docker stop spring-boot-app || true
+                docker rm spring-boot-app || true
+                docker pull ${{secrets.DOCKERHUB_USERNAME}}/spring-boot-app:latest
+                docker run -d -name spring-app -p 8080:8080 ${{secrets.DOCKERHUB_USERNAME}}//spring-boot-app:latest
+                EOF
