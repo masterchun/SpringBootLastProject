@@ -1,9 +1,9 @@
 name: Deploy to Ubuntu Server
-
+#연동
 on:
   push:
     branches:
-      - main  # main 브랜치에 푸시될 때 트리거 
+      - main  # main 브랜치에 푸시될 때 트리거
 
 jobs:
   build:
@@ -43,7 +43,7 @@ jobs:
 
     - name: Add known_hosts
       run: |
-        ssh-keyscan -H rsa 3.34.194.111 >> ~/.ssh/known_hosts
+        ssh-keyscan -H rsa 13.209.67.204 >> ~/.ssh/known_hosts
 
     #- name: 기존프로세스 종료
     #  run: |
@@ -51,12 +51,12 @@ jobs:
 
     - name: Deploy to Server with rsync
       run: | 
-         rsync -avz -e "ssh -o StrictHostKeyChecking=no" build/libs/*.war ubuntu@3.34.194.111:~/app
+         rsync -avz -e "ssh -o StrictHostKeyChecking=no" build/libs/SpringBootLastProject-0.0.1-SNAPSHOT.war ubuntu@13.209.67.204:~/app
 
 
     - name: Run SSH commands
       run: |
-        ssh -i ~/.ssh/id_rsa ubuntu@3.34.194.111 << 'EOF'
+        ssh -i ~/.ssh/id_rsa ubuntu@13.209.67.204 << 'EOF'
           pkill -f 'java -jar' || true
           nohup java -jar ~/app/SpringBootLastProject-0.0.1-SNAPSHOT.war > log.txt 2>&1 &
         EOF
