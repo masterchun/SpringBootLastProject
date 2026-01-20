@@ -7,13 +7,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-    <!-- ****** Breadcumb Area Start ****** -->
-    <div class="breadcumb-area" style="background-image: url(/img/bg-img/breadcumb.jpg);">
+  <div class="breadcumb-area" style="background-image: url(/img/bg-img/breadcumb.jpg);">
         <div class="container h-100">
             <div class="row h-100 align-items-center">
                 <div class="col-12">
                     <div class="bradcumb-title text-center">
-                        <h2>Food Store</h2>
+                        <h2>마이페이지</h2>
                     </div>
                 </div>
             </div>
@@ -25,21 +24,22 @@
                 <div class="col-12">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
+                            
                         </ol>
                     </nav>
                 </div>
             </div>
         </div>
     </div>
-    <!-- ****** Breadcumb Area End ****** -->
-
-    <!-- ****** Archive Area Start ****** -->
     <section class="archive-area section_padding_80">
-        <div class="container">
-            <div class="row">
-            
-            </div>
-        </div>
-   	</section>
+      <div class="container">
+       <div class="col-sm-3">
+        <jsp:include page="../mypage/mypage_menu.jsp"></jsp:include>
+       </div>
+       <div class="col-sm-9">
+        <jsp:include page="${mypage_jsp }"></jsp:include>
+       </div>
+      </div>
+    </section>
 </body>
 </html>

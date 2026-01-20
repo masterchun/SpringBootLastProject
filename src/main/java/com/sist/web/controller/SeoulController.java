@@ -93,34 +93,53 @@ public class SeoulController {
 	}
 	
 	@GetMapping("/seoul/detail")
-	public String seoul_detail(@RequestParam("contentid") int contentid,
-			@RequestParam("contenttype") int contenttype, Model model) {
-		SeoulVO vo = null;
-		String jsp = "";
-		
-		if (contenttype == 12) {
-			vo = sService.seoulAttractionDetailData(contentid);
-			jsp = "../seoul/attraction.jsp";
-		} else if (contenttype == 14) {
-			jsp = "../seoul/culture.jsp";
-		} else if (contenttype == 15) {
-			vo = sService.seoulFestivalDetailData(contentid);
-			jsp = "../seoul/festival.jsp";
-		} else if (contenttype == 32) {
-			jsp = "../seoul/stay.jsp";
-		} else if (contenttype == 38) {
-			jsp = "../seoul/shopping.jsp";
-		} else if (contenttype == 39) {
-			jsp = "../seoul/foodstore.jsp";
-		}
-
-		String[] addrs = vo.getAddress().split(" ");
-		model.addAttribute("addr", addrs[1].trim());
-		model.addAttribute("vo", vo);
-		
-		model.addAttribute("main_jsp", jsp);
-		return "main/main";
-	}
+	  public String seoul_detail(
+		@RequestParam("contentid") int contentid,
+		@RequestParam("contenttype") int contenttype,
+		Model model
+	  )
+	  { 
+		  
+		  String jsp="";
+		  if(contenttype==12)
+		  {
+			  SeoulVO vo=sService.seoulAttractionDetailData(contentid);
+			  String[] addrs=vo.getAddress().split(" ");
+			  model.addAttribute("addr", addrs[1].trim());
+			  model.addAttribute("vo", vo);
+			  jsp="../seoul/attraction.jsp";
+		  }
+		  else if(contenttype==14)
+		  {
+			  jsp="../seoul/culture.jsp";
+		  }
+		  else if(contenttype==15)
+		  {
+			  SeoulVO vo=sService.seoulFestvalDetailData(contentid);
+			  String[] addrs=vo.getAddress().split(" ");
+			  model.addAttribute("addr", addrs[1].trim());
+			  model.addAttribute("vo", vo);
+			  jsp="../seoul/fastval.jsp";
+		  }
+		  else if(contenttype==32)
+		  {
+			  jsp="../seoul/stey.jsp";
+		  }
+		  else if(contenttype==38)
+		  {
+			  jsp="../seoul/shopping.jsp";
+		  }
+		  else if(contenttype==39)
+		  {
+			  SeoulVO vo=sService.seoulFoodStoreDetailData(contentid);
+			  String[] addrs=vo.getAddress().split(" ");
+			  model.addAttribute("addr", addrs[1].trim());
+			  model.addAttribute("vo", vo);
+			  jsp="../seoul/food_store.jsp";
+		  }
+		  model.addAttribute("main_jsp", jsp);
+		  return "main/main";
+	  }
 	
 	@GetMapping("seoul/find")
 	public String seoul_find(Model model) {
