@@ -1,13 +1,13 @@
-name: Deploy to Ubuntu Server
-#연동
+
+name: Deploy with Docker to Ubuntu Server
+
 on:
   push:
     branches:
-      - main  # main 브랜치에 푸시될 때 트리거
-
+      - main  # main 브랜치에 푸시될 때 트리거 (Commit/Push) 20260116 2
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest # ubuntu 최종버전
 
     steps:
     # 코드 체크아웃
@@ -16,9 +16,11 @@ jobs:
 
     # JDK 17 설정
     - name: Set up JDK 17
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v3
       with:
+        distribution: 'temurin'
         java-version: '17'
+        cache: gradle
 
     # gradlew 권한 설정
     - name: Set gradlew permissions
@@ -27,36 +29,37 @@ jobs:
 
     # gradle 빌드
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew clean build -x test
+    # war 파일 생성 = clean 전체 삭제 => 다시 build
 
-    - name: Set SSH key permissions
+    - name: Login in to DockerHub
       run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
+        echo "${{secrets.DOCKERHUB_PASSWORD}}" | docker login -u "${{secrets.DOCKERHUB_USERNAME}}" --password-stdin
 
-    - name: Add SSH key
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t ${{secrets.DOCKERHUB_USERNAME}}/spring-boot-app:latest . 
+        docker push ${{secrets.DOCKERHUB_USERNAME}}/spring-boot-app:latest
+
+    # SSH : 암호화 통신 ==> 개인키(id_ed25519)를 가지고 AWS에 접근
+    - name: Add SSH Key
       uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
-
+      with: 
+        ssh-private-key: ${{secrets.SERVER_SSH_KEY}}
+     # 등록 => 서버키 등록
 
     - name: Add known_hosts
       run: |
-        ssh-keyscan -H rsa 13.209.5.213 >> ~/.ssh/known_hosts
+        ssh-keyscan -t ed25519 3.34.52.56 >> ~/.ssh/known_hosts
 
-    #- name: 기존프로세스 종료
-    #  run: |
-    #    kill -9 $(ps -ef | grep devops | grep -v grep | head -n 1 | awk '{print $2}') || true
-
-    - name: Deploy to Server with rsync
-      run: | 
-         rsync -avz -e "ssh -o StrictHostKeyChecking=no" build/libs/SpringBootLastProject-0.0.1-SNAPSHOT.war ubuntu@13.209.67.204:~/app
-
-
-    - name: Run SSH commands
+    # 실행
+    # 정지 => docker stop image명
+    # 삭제 => docker rm image명
+    - name: Deply on Server using DockerHub image
       run: |
-        ssh -i ~/.ssh/id_rsa ubuntu@13.209.5.213 << 'EOF'
-          pkill -f 'java -jar' || true
-          nohup java -jar ~/app/SpringBootLastProject-0.0.1-SNAPSHOT.war > log.txt 2>&1 &
+        ssh ubuntu@3.34.52.56 << 'EOF'
+        sudo docker stop spring-boot-app || true
+        sudo docker rm spring-boot-app || true
+        sudo docker pull ${{secrets.DOCKERHUB_USERNAME}}/spring-boot-app:latest
+        sudo docker run -d --name spring-boot-app --restart always -p 8080:8080 ${{secrets.DOCKERHUB_USERNAME}}/spring-boot-app:latest 
         EOF
