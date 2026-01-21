@@ -55,5 +55,29 @@ public class ReserveServiceImpl implements ReserveService {
 		// TODO Auto-generated method stub
 		return mapper.reserveAdminData();
 	}
+
+	@Override
+	public void reserveOk(int no) {
+		// TODO Auto-generated method stub
+		mapper.reserveOk(no);
+	}
+
+	@Override
+	public void reserveCancel(int no) {
+		// TODO Auto-generated method stub
+		mapper.reserveCancel(no);
+	}
+
+	@Override
+	public void reserveDelete(int no) {
+		// TODO Auto-generated method stub
+		mapper.reserveDelete(no);
+	}
+
+	@Override
+	public ReserveVO reserveDetailData(int no) {
+		// TODO Auto-generated method stub
+		return mapper.reserveDetailData(no);
+	}
 	
 }

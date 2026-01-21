@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
 	<table class="table">
@@ -38,9 +37,9 @@
 					<td class="text-center">{{ vo.rinwon }}</td>
 					<td class="text-center">{{ vo.dbday }}</td>
 					<td class="text-center">
-						<button class="btn-xs btn-danger" v-if="vo.isReserve === 0">승인 대기</button>
+						<button class="btn-xs btn-danger" v-if="vo.isReserve === 0" @click="store.reserveOk(vo.no, vo.id)">승인 대기</button>
 						<span class="btn btn-xs btn-default" v-else>승인 완료</span>
-						<button class="btn-xs btn-warning" style="margin-left: 2px" v-if="false">취소</button>
+						<button class="btn-xs btn-warning" style="margin-left: 2px" v-if="vo.iscancel === 1" @click="store.reserveDelete(vo.no)">취소</button>
 					</td>
 				</tr>
 			</thead>

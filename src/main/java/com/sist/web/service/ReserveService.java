@@ -12,4 +12,8 @@ public interface ReserveService {
 	public String reserveInsert(ReserveVO vo);
 	public List<ReserveVO> reserveMyData(String id);
 	public List<ReserveVO> reserveAdminData();
+	public void reserveOk(int no);
+	public void reserveCancel(int no);
+	public void reserveDelete(int no);
+	public ReserveVO reserveDetailData(int no);
 }
