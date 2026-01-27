@@ -56,8 +56,12 @@ jobs:
       - name: Deploy on server using DockerHub image
         run: |
           ssh ubuntu@3.37.127.133 << 'EOF'
-            docker stop spring-cicd || true
-            docker rm spring-cicd || true
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd:latest
-            docker run -d --name spring-cicd -p 9090:9090 ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd:latest
+            cd /home/ubuntu/app
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d
+            #docker stop spring-cicd || true
+            #docker rm spring-cicd || true
+            #docker pull ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd:latest
+            #docker run -d --name spring-cicd -p 9090:9090 ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd:latest
           EOF
