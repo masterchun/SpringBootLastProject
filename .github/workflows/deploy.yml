@@ -46,7 +46,7 @@ jobs:
           ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
       # 등록 => 서버키가 등록 
       - name: Add known hosts
-        run: ssh-keyscan -t ed25519 3.37.127.133 >> ~/.ssh/known_hosts
+        run: ssh-keyscan -H ed25519 3.37.127.133 >> ~/.ssh/known_hosts
       # 실행 
       # container명 => 같으면 안된다 
       # 1. 정지 docker stop image명
