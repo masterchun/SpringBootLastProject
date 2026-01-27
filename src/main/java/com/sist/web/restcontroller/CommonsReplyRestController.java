@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CommonsReplyRestController {
 	private final CommonsReplyService cService;
+	private final SimpMessagingTemplate template;
 
 	private Map<String, Object> commonsData(int page, int cno) {
 		Map<String, Object> map = new HashMap<>();
@@ -100,4 +102,32 @@ public class CommonsReplyRestController {
 
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
+	
+	   @PostMapping("/commons/reply_reply_insert_vue/")
+	   public ResponseEntity<Map> commons_reply_reply(
+	     @RequestBody CommonsReplyVO vo,HttpSession session
+	   )
+	   {
+		   Map map=new HashMap();
+		   try
+		   {
+			   String id=(String)session.getAttribute("userid");
+			   String name=(String)session.getAttribute("username");
+			   String sex=(String)session.getAttribute("sex");
+			   vo.setId(id);
+			   vo.setName(name);
+			   vo.setSex(sex);
+			   String pid = cService.commonsReplyReplyInsert(vo);
+			   map=commonsData(vo.getPage(), vo.getCno());
+			   
+			   if (!pid.equals(id)) {
+				   template.convertAndSend("/sub/notice/" + pid, "[댓글 알림] 답글이 달렸습니다");
+			   }
+		   }catch(Exception ex)
+		   {
+			 return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+		   }
+		    return new ResponseEntity<>(map,HttpStatus.OK);
+		    
+	   }
 }

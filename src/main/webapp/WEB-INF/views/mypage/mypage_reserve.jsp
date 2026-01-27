@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
 const ID = '${sessionScope.userid}'
 </script>
@@ -92,17 +91,6 @@ const ID = '${sessionScope.userid}'
 				</tr>
 			</tbody>
 		</table>
-		</div>
-		<div class="toast-container position-fixed bottom-0 end-0 p-3">
-			<div id="reserveToast" class="toast">
-				<div class="toast-header bg-success text-white">
-					<strong class="me-auto">예약 알림</strong>
-					<button type="button" class="btn-close" data-bs-dismission="toast"></button>
-				</div>
-				<div class="toast-body" id="toastMsg">
-				
-				</div>
-			</div>
 		</div>
 	</div>
 	<script src="/vue/axios.js"></script>

@@ -2,7 +2,7 @@
 # 8080 / 1521 / 3306
 # MVC 설정
 server:
-  port: 8080
+  port: 9090
   servlet:
     context-path: /
 spring:
@@ -27,6 +27,9 @@ spring:
 mybatis:
   type-aliases-package: com.sist.web.vo
   mapper-locations: mybatis/mapper/*.xml
+
+kma:
+  service-key: "cersZ70uxWU0ccYpSBAAT5gRkiOl1q3Pqr2GbOvzC0zzyQD073VSzVr0mYlqVldzVqlnc0pW2%2FK%2Fu7dU1s6AfA%3D%3D"
 # MyBatis : 복잡한 SQL => Annotation / XML (JOIN, 동적 쿼리)
 # 프로시저 / 트리거 / 함수
 # JPA => JOIN

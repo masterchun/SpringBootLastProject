@@ -50,4 +50,22 @@ public class CommonsReplyServiceImpl implements CommonsReplyService {
 		
 		mapper.commonsDepthDecrement(vo.getRoot());
 	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public String commonsReplyReplyInsert(CommonsReplyVO vo) {
+		// TODO Auto-generated method stub
+		int pno=vo.getNo();
+		CommonsReplyVO pvo=mapper.commonsReplyParentData(pno);
+		mapper.commonsGroupStepIncrement(pvo);
+		vo.setGroup_id(pvo.getGroup_id());
+		vo.setGroup_step(pvo.getGroup_step()+1);
+		vo.setGroup_tab(pvo.getGroup_tab()+1);
+		vo.setRoot(pno);
+		
+		mapper.commonsReplyReplyInsert(vo);
+		mapper.commonsDepthIncrement(pno);
+		
+		return pvo.getId();
+	}
 }

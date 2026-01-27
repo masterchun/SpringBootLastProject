@@ -12,4 +12,6 @@ public interface CommonsReplyService {
 	public void commonsReplyInsert(CommonsReplyVO vo);
 	
 	public void commonsDelete(int no);
+	
+	public String commonsReplyReplyInsert(CommonsReplyVO vo);
 }

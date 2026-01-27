@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="/css/toast.css">
 </head>
 <body>
 	<!-- ****** Top Header Area Start ****** -->
@@ -76,7 +77,7 @@
 				<!-- Logo Area Start -->
 				<div class="col-12">
 					<div class="logo_area text-center">
-						<a href="/main" class="yummy-logo">Korea Travle</a>
+						<a href="/main" class="yummy-logo">Korea Travel</a>
 					</div>
 				</div>
 			</div>
@@ -171,5 +172,6 @@
 		</div>
 	</header>
 	<!-- ****** Header Area End ****** -->
+	<jsp:include page="../commons/toast.jsp"></jsp:include>
 </body>
 </html>

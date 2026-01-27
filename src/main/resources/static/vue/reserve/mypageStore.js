@@ -35,8 +35,6 @@ const useMypageStore = defineStore('mypage', {
 			  }, 5000);
 			},
 		
-		
-		
 		async dataRecv() {
 			const res = await api.get('/mypage/reserve_list_vue/')
 			this.reserve_list = res.data
@@ -63,3 +61,8 @@ const useMypageStore = defineStore('mypage', {
 		}
 	}
 })
+
+function hideToast() {
+	const toast = document.getElementById("reserveToast");
+	toast.classList.remove("show");
+}
