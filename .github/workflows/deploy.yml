@@ -57,9 +57,9 @@ jobs:
         run: |
           ssh ubuntu@3.37.127.133 << 'EOF'
             cd /home/ubuntu/app
-            docker-compose pull
-            docker-compose down
-            docker-compose up -d
+            docker compose pull
+            docker compose down
+            docker compose up -d
             #docker stop spring-cicd || true
             #docker rm spring-cicd || true
             #docker pull ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd:latest
